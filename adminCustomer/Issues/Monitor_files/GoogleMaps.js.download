@@ -1,0 +1,878 @@
+﻿
+
+var GoogleMaps = {
+
+    gpsMap: null,
+    gpsFence: null,
+    gpsBounds: null,
+    gpsLat: 0,
+    gpsLon: 0,
+    gpsInfoWindow: null,
+    markerArray: [],
+    infowindow: null,
+    MapCentered: false,
+    ControlBoxAdded: false,
+
+    InitMap: function (MapDivID) {
+        // Init the google map
+
+        if (GoogleMaps.gpsMap != null)
+        {
+            //GoogleMaps.gpsMap.entities.clear();
+        }
+        else
+        {
+            var myStyle = [
+  {
+      'elementType': 'geometry',
+      'stylers': [
+        {
+            'color': '#1d2c4d'
+        }
+      ]
+  },
+  {
+      'elementType': 'labels.text.fill',
+      'stylers': [
+        {
+            'color': '#8ec3b9'
+        }
+      ]
+  },
+  {
+      'elementType': 'labels.text.stroke',
+      'stylers': [
+        {
+            'color': '#1a3646'
+        }
+      ]
+  },
+  {
+      'featureType': 'administrative.country',
+      'elementType': 'geometry.stroke',
+      'stylers': [
+        {
+            'color': '#4b6878'
+        }
+      ]
+  },
+  {
+      'featureType': 'administrative.land_parcel',
+      'elementType': 'labels.text.fill',
+      'stylers': [
+        {
+            'color': '#64779e'
+        }
+      ]
+  },
+  {
+      'featureType': 'administrative.province',
+      'elementType': 'geometry.stroke',
+      'stylers': [
+        {
+            'color': '#4b6878'
+        }
+      ]
+  },
+  {
+      'featureType': 'landscape.man_made',
+      'elementType': 'geometry.stroke',
+      'stylers': [
+        {
+            'color': '#334e87'
+        }
+      ]
+  },
+  {
+      'featureType': 'landscape.natural',
+      'elementType': 'geometry',
+      'stylers': [
+        {
+            'color': '#023e58'
+        }
+      ]
+  },
+  {
+      'featureType': 'poi',
+      'elementType': 'geometry',
+      'stylers': [
+        {
+            'color': '#283d6a'
+        }
+      ]
+  },
+  {
+      'featureType': 'poi',
+      'elementType': 'labels.text.fill',
+      'stylers': [
+        {
+            'color': '#6f9ba5'
+        }
+      ]
+  },
+  {
+      'featureType': 'poi',
+      'elementType': 'labels.text.stroke',
+      'stylers': [
+        {
+            'color': '#1d2c4d'
+        }
+      ]
+  },
+  {
+      'featureType': 'poi.park',
+      'elementType': 'geometry.fill',
+      'stylers': [
+        {
+            'color': '#023e58'
+        }
+      ]
+  },
+  {
+      'featureType': 'poi.park',
+      'elementType': 'labels.text.fill',
+      'stylers': [
+        {
+            'color': '#3C7680'
+        }
+      ]
+  },
+  {
+      'featureType': 'road',
+      'elementType': 'geometry',
+      'stylers': [
+        {
+            'color': '#304a7d'
+        }
+      ]
+  },
+  {
+      'featureType': 'road',
+      'elementType': 'labels.text.fill',
+      'stylers': [
+        {
+            'color': '#98a5be'
+        }
+      ]
+  },
+  {
+      'featureType': 'road',
+      'elementType': 'labels.text.stroke',
+      'stylers': [
+        {
+            'color': '#1d2c4d'
+        }
+      ]
+  },
+  {
+      'featureType': 'road.highway',
+      'elementType': 'geometry',
+      'stylers': [
+        {
+            'color': '#2c6675'
+        }
+      ]
+  },
+  {
+      'featureType': 'road.highway',
+      'elementType': 'geometry.stroke',
+      'stylers': [
+        {
+            'color': '#255763'
+        }
+      ]
+  },
+  {
+      'featureType': 'road.highway',
+      'elementType': 'labels.text.fill',
+      'stylers': [
+        {
+            'color': '#b0d5ce'
+        }
+      ]
+  },
+  {
+      'featureType': 'road.highway',
+      'elementType': 'labels.text.stroke',
+      'stylers': [
+        {
+            'color': '#023e58'
+        }
+      ]
+  },
+  {
+      'featureType': 'transit',
+      'elementType': 'labels.text.fill',
+      'stylers': [
+        {
+            'color': '#98a5be'
+        }
+      ]
+  },
+  {
+      'featureType': 'transit',
+      'elementType': 'labels.text.stroke',
+      'stylers': [
+        {
+            'color': '#1d2c4d'
+        }
+      ]
+  },
+  {
+      'featureType': 'transit.line',
+      'elementType': 'geometry.fill',
+      'stylers': [
+        {
+            'color': '#283d6a'
+        }
+      ]
+  },
+  {
+      'featureType': 'transit.station',
+      'elementType': 'geometry',
+      'stylers': [
+        {
+            'color': '#3a4762'
+        }
+      ]
+  },
+  {
+      'featureType': 'water',
+      'elementType': 'geometry',
+      'stylers': [
+        {
+            'color': '#0e1626'
+        }
+      ]
+  },
+  {
+      'featureType': 'water',
+      'elementType': 'labels.text.fill',
+      'stylers': [
+        {
+            'color': '#4e6d70'
+        }
+      ]
+  }
+            ]
+
+            GoogleMaps.gpsMap = new google.maps.Map(document.getElementById(MapDivID), {
+                center: { lat: 38.4390123, lng: -97.2698398 },
+                zoom: 15,
+                zoomControlOptions: {
+                    style: google.maps.ZoomControlStyle.SMALL,
+                    position: google.maps.ControlPosition.LEFT
+                },
+                fullscreenControlOptions: {
+                    position: google.maps.ControlPosition.LEFT
+                },
+                streetViewControlOptions: {
+                    position: google.maps.ControlPosition.LEFT
+                }
+
+                
+
+               // mapTypeId: google.maps.MapTypeId.TERRAIN,
+            
+              //  mapTypeControlOptions: {
+               //     mapTypeIds: ['myStyle', google.maps.MapTypeId.ROADMAP, google.maps.MapTypeId.TERRAIN]
+                //},
+               // mapTypeid: 'myStyle'
+            });
+
+            GoogleMaps.gpsMap.setOptions({ styles: myStyle });
+
+
+            GoogleMaps.gpsBounds = new google.maps.LatLngBounds();
+
+
+
+
+            //GoogleMaps.infowindow.close();
+
+        }
+    },
+
+    AddControlBox: function()
+    {
+
+        if (GoogleMaps.ControlBoxAdded == true)
+            return;
+
+        GoogleMaps.ControlBoxAdded = true;
+
+        var controlUI = document.createElement('div');
+        controlUI.style.backgroundColor = '#dddddd';
+        controlUI.style.border = '1px solid #fff';
+        //controlUI.style.borderRadius = '6px';
+        controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+        controlUI.style.cursor = 'pointer';
+        controlUI.style.marginBottom = '12px';
+        //controlUI.style.textAlign = 'center';
+        controlUI.style.paddingBottom = '6px';
+        controlUI.style.paddingTop = '6px';
+        controlUI.style.paddingLeft = '14px';
+        controlUI.style.paddingRight = '14px';
+
+        //controlUI.title = 'Click to recenter the map';
+        //controlDiv.appendChild(controlUI);
+
+        var controlText = document.createElement('div');
+        controlText.style.color = 'rgb(0,0,0)';
+        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+        controlText.style.fontSize = '16px';
+        controlText.style.lineHeight = '38px';
+        controlText.style.paddingLeft = '5px';
+        controlText.style.paddingRight = '5px';
+        controlText.innerHTML = 'Center Map';
+        //controlUI.appendChild(controlText);
+
+        var f = $("#chicken");
+        controlUI.append($("#chicken")[0]);
+        //controlUI.appendChild(f[0]);
+        //controlUI.append(f[0]);
+        //controlUI.appendChild($("#chicken"));
+
+        controlUI.addEventListener('click', function () {
+            //map.setCenter(chicago);
+            //alert('fish');
+        });
+
+        GoogleMaps.gpsMap.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlUI);
+    },
+
+    AddCircle: function(Longitude, Latitude, PropertyData)
+    {
+        var loc = new google.maps.LatLng(Latitude, Longitude);
+
+        if (isEmpty(Longitude) == true)
+            return;
+
+        GoogleMaps.gpsBounds.extend(loc);
+
+        var cityCircle = new google.maps.Circle({
+            strokeColor: '#ff7e00',
+            strokeOpacity: 0.4,
+            strokeWeight: 1,
+            fillColor: '#ff7e00',
+            fillOpacity: 0.15,
+            map: GoogleMaps.gpsMap,
+            center: loc,
+            radius: 100
+        });
+
+    },
+
+    ClearMarkers: function ()
+    {
+        for (var i = 0; i < GoogleMaps.markerArray.length; i++)
+        {
+            GoogleMaps.markerArray[i].setMap(null);
+        }
+        GoogleMaps.markerArray.length = 0;
+    },
+
+    //var loc = new google.maps.LatLng(MarkerObjectData.GPSLatitude, MarkerObjectData.GPSLongitude,)
+
+    FitMarkers: function()
+    {
+
+        
+
+        //for (var i = 0; i < GoogleMaps.markerArray.length; i++)
+        //{
+        //    //    bounds.extend(markers[i].getPosition());
+        //    console.log(GoogleMaps.markerArray[i].Longitude);
+        //    console.log(GoogleMaps.markerArray[i].Latitude);
+        //}
+        GoogleMaps.gpsMap.fitBounds(GoogleMaps.gpsBounds);
+        
+
+    },
+
+    ZoomTo: function(Latitude, Longitude)
+    {
+        var loc = new google.maps.LatLng(Latitude, Longitude);
+        GoogleMaps.gpsMap.setCenter(loc);
+        GoogleMaps.gpsMap.setZoom(17);
+
+    },
+
+    AddMarker: function (Action, Longitude, Latitude, Rotation, MarkerObjectData, AutoZoom)
+        {
+
+            // Set the marker location
+        var loc = new google.maps.LatLng(Latitude, Longitude);  //{lat: 38.4390123, lng: -97.2698398}
+        //console.log(Action);
+        //console.log(Latitude);
+        //console.log(Longitude);
+            GoogleMaps.gpsBounds.extend(loc);
+
+            if (GoogleMaps.MapCentered == false)
+            {
+                GoogleMaps.gpsMap.setCenter(loc);
+                GoogleMaps.MapCentered = true;
+            }
+
+            var gpsMarker = new google.maps.Marker({
+                position: loc,
+                map: GoogleMaps.gpsMap,
+                draggable: false,
+                visible: true,
+                Data: MarkerObjectData
+            });
+
+            switch (Action)
+            {
+                case "GPSTrack":
+                    gpsMarker.setIcon({
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        scale: 6,
+                        fillColor: GoogleMaps.GetArrowColor(MarkerObjectData.Speed),
+                        fillOpacity: 0.8,
+                        strokeWeight: 1,
+                        rotation: Rotation
+                    });
+
+                    break;
+
+                case "GPSCallPhone":
+                    break;
+
+                case "GPSChooseSite":
+                    gpsMarker.setIcon({
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 6,
+                        fillColor: "blue",
+                        fillOpacity: 0.8,
+                        strokeWeight: 1,
+                        rotation: Rotation
+                    });
+                    break;
+
+                case "GPSClockIn":
+                    break;
+
+                case "GPSClockOut":
+                    break;
+
+                case "GPSLeaveSite":
+                    break;
+
+                case "GPSLocation":
+                    break;
+
+                case "GPSLogin":
+                    break;
+
+                case "GPSLogout":
+                    break;
+
+                case "GPSTimedTick":
+                    break;
+
+                case "GPSTourStart":
+                    break;
+
+                case "UserLocation":
+
+                    if (MarkerObjectData.UserPhotoID == 0)
+                    {
+                        gpsMarker.setIcon({
+                            url: 'https://maps.google.com/mapfiles/ms/icons/yellow-dot.png'
+                        });
+
+                    }
+                    else
+                    {
+                        gpsMarker.setIcon({
+                            url: 'https://devx5.silvertracker.net/BinaryFiles/GetUserPhoto.ashx?BinaryIDFK=' + MarkerObjectData.UserPhotoID + '&Username=bamparan01&UseThumbnail=true&AddBorder=true',
+                            anchor: new google.maps.Point(0, 50)
+                        });
+
+                    }
+                    break;
+
+                case "Arrived":
+                    gpsMarker.setIcon({
+                        url: 'https://devx5.silvertracker.net/Images/BullseyeGreen.png',
+                        anchor: new google.maps.Point(23, 23)
+                    });
+                    break;
+
+                case "New Unassigned Issue":
+                    gpsMarker.setIcon({
+                        url: 'https://devx5.silvertracker.net/Images/BullseyeRed.png',
+                        anchor: new google.maps.Point(23, 23)
+                    });
+                    break;
+
+                case "Acknowledged In Route":
+                    gpsMarker.setIcon({
+                        url: 'https://devx5.silvertracker.net/Images/BullseyeLightBlue.png',
+                        anchor: new google.maps.Point(23, 23)
+                    });
+                    break;
+
+                case "NOT Acknowledged":
+                    gpsMarker.setIcon({
+                        url: 'https://devx5.silvertracker.net/Images/BullseyeYellow.png',
+                        anchor: new google.maps.Point(23, 23)
+                    });
+                    break;
+
+                case "Closed":
+                    if (MarkerObjectData.UserPhotoID > 0)
+                    {
+                        // Has Photo
+                        gpsMarker.setIcon({
+                            url: 'https://devx5.silvertracker.net/BinaryFiles/GetUserPhoto.ashx?BinaryIDFK=' + MarkerObjectData.UserPhotoID + '&Username=bamparan01&UseThumbnail=true&AddBorder=true'
+                        });
+                    }
+                    else
+                    {
+                        // No Photo
+                        gpsMarker.setIcon({
+                            url: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
+                        });
+                    }
+
+                    break;
+
+                default:
+                    break;
+            }
+
+
+
+     
+
+
+
+        // Add the marker to the marker array
+        GoogleMaps.markerArray.push(gpsMarker);
+        
+
+        if (Action.startsWith("GPS") == false)
+        {
+            // Add the marker click event
+            google.maps.event.addListener(gpsMarker, 'click', function () {
+                GoogleMaps.ClickMarker(gpsMarker);
+            });
+
+        }
+        else
+        {
+
+
+
+            // Add the marker infowindow
+            gpsMarker.addListener('mouseover', function () {
+
+
+                if (isEmpty(GoogleMaps.infowindow) == false)
+                {
+                    // Works
+                    GoogleMaps.infowindow.close();
+                }
+
+                GoogleMaps.infowindow = new google.maps.InfoWindow({
+                    content: "Action: <b>" + this.Data.Action + "</b><br>Time: <b>" + this.Data.CreatedDTM + "</b><br>Speed: <b>" + this.Data.Speed + "</b>"
+                });
+
+                GoogleMaps.infowindow.open(GoogleMaps.gpsMap, this);
+
+
+                //var homeLatlng = new google.maps.LatLng(47.66025657, -122.33534714);
+
+                //GoogleMaps.infowindow = new google.maps.InfoWindow({
+
+                //    map: GoogleMaps.gpsMap,
+                //    position: homeLatlng
+                //});
+
+                //GoogleMaps.infowindow.setContent("Action: <b>" + this.Data.Action + "</b><br>Time: <b>" + this.Data.CreatedDTM + "</b><br>Speed: <b>" + this.Data.Speed + "</b>");
+                //GoogleMaps.infowindow.open(GoogleMaps.gpsMap, this);
+
+            });
+
+            // Clear the marker infowindow
+            gpsMarker.addListener('mouseout', function () {
+                GoogleMaps.infowindow.close();
+            });
+        }
+
+        //GoogleMaps.gpsMap.setCenter(loc);
+
+        //icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
+        //icon: 'https://devx5.silvertracker.net/Images/BullseyeRed.png'
+        //icon: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png'
+
+        
+
+        //PropertyAddressGeofence.gpsMarker.setPosition(loc);
+        //GPSIssueMap.gpsMarker.setPosition(loc);
+
+
+    },
+    
+        //for (var city in citymap) {
+        // Add the circle for this city to the map.
+
+          //  });
+
+
+        //gpsMarker.addListener('click', function () {
+        //    var ff = this.get('MarkerObjectData');
+        //    alert(ff.PropertyName);
+
+        //    gpsInfoWindow.open(gpsMap, gpsMarker);
+//})
+
+
+//    if (MarkerObjectData.UserPhotoID == 0)
+//    {
+
+           
+
+//if (MarkerObjectData.Speed > 50)
+                
+//else
+//    arrowcolor = "green";
+            
+
+// Init the google map GPS marker
+        
+//    var gpsMarker = new google.maps.Marker({
+//        position: loc, //{lat: 38.4390123, lng: -97.2698398},// { lat: Latitude, lng: Longitude }, //{ lat: PropertyAddressGeofence.gpsLat, lng: PropertyAddressGeofence.gpsLon}
+//        map: GoogleMaps.gpsMap,
+//        draggable: false,
+//        //title: MarkerObjectData.PropertyName,
+//        visible: true,
+//        Data: MarkerObjectData,
+//        icon: {
+//            path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+//            scale: 6,
+//            fillColor: arrowcolor,
+//            fillOpacity: 0.8,
+//            strokeWeight: 1,
+//            rotation: Degg
+//        }
+//    });
+//}
+
+//if (MarkerObjectData.UserPhotoID == -1)
+//   {
+//var iconImage;
+
+//switch (MarkerObjectData.IssueStatus)
+//{
+//    case "Arrived":
+//        iconImage = {
+//            url: 'https://devx5.silvertracker.net/Images/BullseyeGreen.png',
+//            anchor: new google.maps.Point(23, 23)
+//        };
+//        break;
+
+//    case "New Unassigned Issue":
+//        iconImage = {
+//            url: 'https://devx5.silvertracker.net/Images/BullseyeRed.png',
+//            anchor: new google.maps.Point(23, 23)
+//        };
+//        break;
+
+//    case "Acknowledged In Route":
+//        iconImage = {
+//            url: 'https://devx5.silvertracker.net/Images/BullseyeLightBlue.png',
+//            anchor: new google.maps.Point(23, 23)
+//        };
+//        break;
+
+//    case "NOT Acknowledged":
+//        gpsMarker.setIcon({
+//            url: 'https://devx5.silvertracker.net/Images/BullseyeYellow.png',
+//            anchor: new google.maps.Point(23, 23)
+//        });
+//        break;
+//}
+
+
+
+// Init the google map GPS marker
+//var gpsMarker = new google.maps.Marker({
+//    position: loc, //{lat: 38.4390123, lng: -97.2698398},// { lat: Latitude, lng: Longitude }, //{ lat: PropertyAddressGeofence.gpsLat, lng: PropertyAddressGeofence.gpsLon}
+//    map: GoogleMaps.gpsMap,
+//    draggable: false,
+//    title: MarkerObjectData.PropertyName,
+//    visible: true,
+//    Data: MarkerObjectData,
+//    //animation: google.maps.Animation.DROP,
+//    icon: iconImage
+               
+               
+//});
+        
+    
+
+    ClickMarker: function (gpsMarker)
+    {
+
+        var Post = new Object()
+        Post.Action = 'UserMapGetPopupInfo';
+        Post.SelectedUserName = gpsMarker.Data.SelectedUserName;
+        Post.PropertyIDFK = gpsMarker.Data.PropertyIDFK;
+
+        UserChatMap.UserClicked(gpsMarker.Data.SelectedUserName);
+
+
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "/API/API.ashx",
+            data: JSON.stringify(Post),
+            dataType: "json",
+            success: function (msg) {
+               
+                var Contn;
+                var Prop;
+
+                if (msg[0].UserPhotoID > 0)
+                {
+                    Contn = '<img id="imgUser" src="/BinaryFiles/GetUserPhoto.ashx?BinaryIDFK=' + msg[0].UserPhotoID + '&Username=bamparan01&UseThumbnail=true" style="max-width: 120px; border: 1px solid silver; float: left">';
+                }
+                else
+                {
+                    Contn = '<img id="imgUser" src="/Images/usersm50.png" style="max-width: 120px; border: 1px solid silver; float: left">';
+                }
+
+                if (msg[0].PropertyPhotoID > 0)
+                {
+                    Prop = '<img alt="" id="imgPropertyPhoto" src="/BinaryFiles/GetPropertyPhoto.ashx?BinaryIDFK=' + msg[0].PropertyPhotoID + '&amp;Username=CSmith" style="float: right; max-width: 140px; max-height: 140px; border: 1px solid #a8a8a8; border-radius: 3px;">';
+                }
+                else
+                {
+                    Prop = '<img alt="" id="imgPropertyPhoto" src="/Images/PropertyGeneric.png" style="float: right; max-width: 140px; max-height: 140px; border: 1px solid #a8a8a8; border-radius: 3px;">';
+                }
+
+                //var Contn = '<img id="imgUser" src="/BinaryFiles/GetUserPhoto.ashx?BinaryIDFK=3707&Username=bamparan01&UseThumbnail=true" style="max-width: 200px; border: 1px solid silver;">';
+
+        
+               
+
+               var div = '<div>'
+
+                //                <img src="/BinaryFiles/GetPropertyPhoto.ashx?BinaryIDFK=' + M.Data.PropertyPhotoID + '&amp;Username=CSmith" style="float: right; max-width: 140px; max-height: 140px; border: 1px solid #a8a8a8; border-radius: 3px;"> \
+
+
+                var y = '  \
+                <div> \
+                <div> \
+                ' + Contn + ' \
+                <div style="float: left; padding: 5px;"> \
+                <label style="display: inline-block; line-height: normal; margin: 0px; min-height: 0px;">' + msg[0].FullName + '</label><br /> \
+                <label style="display: inline-block; line-height: normal; margin: 0px; min-height: 0px;">Current Cell Number: <b>' + msg[0].CurrentHandheldCellNumber + '</b></label> \
+                </div> \
+                </div> \
+                <div style="clear: both"></div> \
+                <hr /> ' + Prop + ' \
+                <div style="float: right; padding: 4px;"> \
+                <label style="display: block; line-height: normal; margin: 0px; min-height: 0px;">' + msg[0].PropertyName + '</label> \
+                <label style="display: block; line-height: normal; margin: 0px; min-height: 0px;">' + msg[0].Address + '</label> \
+                <label style="display: block; line-height: normal; margin: 0px; min-height: 0px;">Total Issue Count:  <b>' + msg[0].TotalIssueCount + '</b></label> \
+                <label style="display: block; line-height: normal; margin: 0px; min-height: 0px;">Total Open:  <b>' + msg[0].OpenIssueCount + '</b></label> \
+                <label style="display: block; line-height: normal; margin: 0px; min-height: 0px;">Total Closed:  <b>' + msg[0].ClosedIssueCount + '</b></label> \
+                <label style="display: block; line-height: normal; margin: 0px; min-height: 0px;">Open Level 1:  <b>' + msg[0].OpenLevel1 + '</b></label> \
+                <label style="display: block; line-height: normal; margin: 0px; min-height: 0px;">Open Level 2:  <b>' + msg[0].OpenLevel2 + '</b></label> \
+                <label style="display: block; line-height: normal; margin: 0px; min-height: 0px;">Open Level 3:  <b>' + msg[0].OpenLevel3 + '</b></label> \
+                </div>  \
+                </div>'
+
+                
+
+               if (isEmpty(GoogleMaps.gpsInfoWindow) == false)
+               {
+                   // Works
+                   GoogleMaps.gpsInfoWindow.close();
+               }
+
+               GoogleMaps.gpsInfoWindow = new google.maps.InfoWindow({
+                   content: y
+               });
+
+                //content: '<div>' + M.Data.PropertyName + Contn + Prop + '</div>'
+               GoogleMaps.gpsInfoWindow.open(GoogleMaps.gpsMap, gpsMarker);
+
+            },
+            error: function (msg) {
+                // ShowWarningDialog('A error has occured in Load Messages.');
+                Common.LogAjaxError('UserChat.ascx', 'LoadMessages', msg.responseJSON.Message);
+            }
+        });
+
+
+
+
+      
+
+        
+
+    }
+       ,
+  
+    GetArrowColor: function(Speed)
+    {
+        var arrowcolor;
+
+        const x = Speed;
+        switch (true)
+        {
+            case (x < 50):
+                arrowcolor = "green";
+                break;
+
+            case (x < 55):
+                arrowcolor = "green";
+                break;
+
+            case (x < 60):
+                arrowcolor = "yellow";
+                break;
+
+            case (x < 65):
+                arrowcolor = "orange";
+                break;
+
+            case (x < 70):
+                arrowcolor = "red";
+                break;
+
+            case (x < 75):
+                arrowcolor = "red";
+                break;
+
+            case (x < 80):
+                arrowcolor = "red";
+                break;
+
+            default:
+                break;
+        }
+
+        return arrowcolor;
+    }
+
+
+}
+
+
+//var marker = new google.maps.Marker({
+//    position: uluru,
+//    map: map,
+//    title: 'Uluru (Ayers Rock)'
+//});
+//marker.addListener('click', function() {
+//    infowindow.open(map, marker);
+//});
+
+// GoogleMaps.gpsMap.mapTypes.set('myStyle', new google.maps.StyledMapType(myStyle, { name: 'My Style' }));

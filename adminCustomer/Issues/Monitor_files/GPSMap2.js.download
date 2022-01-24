@@ -1,0 +1,792 @@
+﻿
+var map, canvasLayer;
+var pinInfobox = null;
+var pictureBox = null;
+var fish;
+
+//window.onload = function () { initMap(); }
+
+function BoxChanged()
+{
+    var fish = 0;
+
+    var propIndex = document.getElementById("scboPropertyName").selectedIndex;
+    var userIndex = document.getElementById("scboUserName")
+    if (userIndex != null)
+    {
+        fish = userIndex.selectedIndex;
+    }
+
+    if (propIndex > 0 || fish > 0)
+    {
+        // Show date ranges
+        document.getElementById("txtEndDate").style.visibility = "visible";
+        document.getElementById("lblEndDate").style.visibility = "visible";
+        document.getElementById("lblStartDate").innerHTML = "Start Date";
+    }
+    else
+    {
+        // Only show 1 date
+        document.getElementById("txtEndDate").style.visibility = "hidden";
+        document.getElementById("lblEndDate").style.visibility = "hidden";
+        document.getElementById("lblStartDate").innerHTML = "Choose Date";
+    }
+
+}
+
+function loadMapScenario() {
+    var navigationBarMode = Microsoft.Maps.NavigationBarMode;
+
+    map = new Microsoft.Maps.Map(document.getElementById('myMap'), {
+        credentials: 'Am460FO7sHvn1DvW29L8Kh6x6TEjpq8IeNZMsEjt7_B9UtnosWAlGCzt25u2YJ0R',
+        navigationBarMode: navigationBarMode.compact
+    });
+
+    //initMap();
+}
+
+
+function initMap()
+{
+
+
+    // Inits a new bing map
+    if (map != null)
+    {
+        map.entities.clear();
+        map = null;
+    }
+    
+    map = new Microsoft.Maps.Map(document.getElementById('myMap'), { credentials: 'Am460FO7sHvn1DvW29L8Kh6x6TEjpq8IeNZMsEjt7_B9UtnosWAlGCzt25u2YJ0R', zoom: 4, center: new Microsoft.Maps.Location(36.73888412439431, -99.140625) });
+
+    //map.setView({ zoom: 18, center: new Microsoft.Maps.Location(latitude, longitude) });
+    //map.setView({ mapTypeId: Microsoft.Maps.MapTypeId.birdseye });
+
+    ////GPSMapSearch();
+
+    //Microsoft.Maps.registerModule("CanvasPushpinModule", "/Scripts/CanvasPushpinModule.js");
+    //Microsoft.Maps.loadModule("CanvasPushpinModule", {
+    //    callback: function ()
+    //    {
+    //        //Create Canvas Entity Collection
+    //        canvasLayer = new CanvasLayer(map);
+    //        map.entities.push(canvasLayer);
+
+    //        //Create the canvas pushpins
+    //        createCanvasPins();
+    //    }
+    //});
+}
+
+function ShowGPS()
+{
+    $find('mpeShowGPS').show();
+    // Init GPS
+
+    // initMap(); 
+
+    //map = new Microsoft.Maps.Map(document.getElementById('myMap'), { credentials: 'Am460FO7sHvn1DvW29L8Kh6x6TEjpq8IeNZMsEjt7_B9UtnosWAlGCzt25u2YJ0R', zoom: 2 });
+
+    //mmm.setView({ zoom: 18, center: new Microsoft.Maps.Location(38.766773216666664, -121.26823806666667) });
+    //mmm.setView({ mapTypeId: Microsoft.Maps.MapTypeId.birdseye });
+
+    zoomLocation($('#hidLongitude').val(), $('#hidLatitude').val()); // Longitude, Latitude);
+
+    
+
+    addPushPin('loc', $('#hidLatitude').val(), $('#hidLongitude').val(), 'Yellow', $('#hidBaseIssueType').val().charAt(0), $('#hidIssueLevel').val())
+    
+    addCircle(parseFloat($('#hidAddressLatitude').val()), parseFloat($('#hidAddressLongitude').val()));
+
+    return false;
+}
+
+function setInfoBoxHTMLContent()
+{
+    map.entities.clear();
+    var infoboxOptions = { width: 200, height: 100, showCloseButton: true, zIndex: 0, offset: new Microsoft.Maps.Point(10, 0), showPointer: true };
+    var defaultInfobox = new Microsoft.Maps.Infobox(map.getCenter(), infoboxOptions);
+    map.entities.push(defaultInfobox);
+    defaultInfobox.setHtmlContent('<div id="infoboxText" style="background-color:White; border-style:solid;border-width:medium; border-color:DarkOrange; min-height:100px; width:240px;"><b id="infoboxTitle" style="position:absolute; top:10px; left:10px; width:220px;">myTitle</b><a id="infoboxDescription" style="position:absolute; top:30px; left:10px; width:220px;">Description</a></div>');
+}
+
+function GPSMapSearch()
+{
+    
+    //initMap();
+    map.entities.clear();
+
+    var scboPropertyName = document.getElementById('scboPropertyName');
+    var PropertyIDFK = scboPropertyName.options[scboPropertyName.selectedIndex].value;
+
+    if (PropertyIDFK == 'All Properties')
+    {
+        PropertyIDFK = -1;
+    }
+
+    var LookupUsername = 'All Users';
+    var scboUserName = document.getElementById('scboUserName');
+
+    if (scboUserName != null)
+    {
+        LookupUsername = scboUserName.options[scboUserName.selectedIndex].value;
+    }
+
+    var scboIssueLevels = document.getElementById('scboIssueLevels');
+
+    var IssueListRequest = new Object();
+    IssueListRequest.Username = document.getElementById("hidUsername").value;// 'GSOSA1';
+    IssueListRequest.LookupUsername = LookupUsername;//'GSOSA1'; // alert (document.getElementById("scboUserName").selectedIndex);
+    IssueListRequest.CustomerIDFK = document.getElementById("hidCustomerIDFK").value;//50532;
+    IssueListRequest.PropertyIDFK = PropertyIDFK;// 11774; // alert (document.getElementById("scboPropertyName").selectedIndex);
+    IssueListRequest.IncludePaths = document.getElementById("schkIncludePathLines").checked; //var ck = getElementById("schkIncludePathLines").chec
+    IssueListRequest.IncludeOutlines = document.getElementById("schkIncludePropertyOutlines").checked;
+    IssueListRequest.IssueLevel = scboIssueLevels.options[scboIssueLevels.selectedIndex].value;
+    IssueListRequest.StartDate = document.getElementById("txtStartDate").value;
+    IssueListRequest.EndDate = document.getElementById("txtEndDate").value;
+
+
+    //    Username As String, LookupUsername As String, CustomerIDFK As Integer, PropertyIDFK As Integer, IncludePaths As Boolean, IncludeOutlines As Boolean, IssueLevel As Integer, StartDate As String, EndDate As String
+
+
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: "/WebServices/GPSGetMapData.asmx/GetIssueList",
+        data: JSON.stringify(IssueListRequest),
+        dataType: "json",
+        success: function (msg)
+        {
+            // Hide the fake progress indicator graphic.
+            if (msg.d == '[]')
+            {
+                ShowWarningDialog('No Data was found.  Please try a different location and/or date range.');
+            }
+            else
+            {
+                GPSMapSearchResults(msg.d);
+            }
+
+        },
+        error: function (msg)
+        {
+            ShowWarningDialog('A Map Search Error has occured.');
+            Common.LogAjaxError('GPSMap2.js', 'GPSMapSearch', msg.responseJSON.Message);
+        }
+    });
+
+}
+
+function GPSMapSearchResults(result)
+{
+    map.entities.clear();
+
+    // Get the JSON data and parse it up
+    var obj = JSON && JSON.parse(result);
+
+    // Build the push pin box
+    pinInfobox = new Microsoft.Maps.Infobox(map.getCenter(),
+                {
+                    visible: false, zIndex: 50, showCloseButton: true, offset: new Microsoft.Maps.Point(15, 15)
+
+                });
+
+    map.entities.push(pinInfobox);
+    
+    var Counter = 0;
+    
+    // Add a push pin for each IssueIDFK
+    for (var ff in obj)
+    {
+        Counter += 1;
+        addPushPin(obj[ff].IssueIDFK, obj[ff].Latitude, obj[ff].Longitude, 'Yellow', obj[ff].Label, obj[ff].IssueLevel);
+        if (ff > 0)
+        {
+            // Start polyline
+            if (document.getElementById("schkIncludePathLines").checked == true)
+            {
+                var location1 = new Microsoft.Maps.Location(obj[ff - 1].Latitude, obj[ff - 1].Longitude);
+                var location2 = new Microsoft.Maps.Location(obj[ff].Latitude, obj[ff].Longitude);
+                
+                addPolyline(location1, location2, Math.round((Counter / obj.length) * 255));
+            }
+        }
+    }
+
+    map.setView({ zoom: 18, center: new Microsoft.Maps.Location((obj[0].Latitude * 1) + .0003, (obj[0].Longitude * 1) + .0003) });
+
+    //map.setView({ mapTypeId: Microsoft.Maps.MapTypeId.birdseye });
+
+    if (document.getElementById("schkIncludePropertyOutlines").checked == true)
+    {
+        // Include property outlines
+        var GetPropertyGPSOutlineList = new Object();
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "/WebServices/GPSGetMapData.asmx/GetPropertyGPSOutlineList",
+            data: JSON.stringify(GetPropertyGPSOutlineList),
+            dataType: "json",
+            success: function (msg)
+            {
+                // Hide the fake progress indicator graphic.
+                ShowPropertyOutlines(msg.d);
+
+            },
+            error: function (msg)
+            {
+                ShowWarningDialog('A Map Search Result Error has occured.');
+                Common.LogAjaxError('GPSMap2.js', 'GPSMapSearchResults', msg.responseJSON.Message);
+            }
+        });
+    }
+    return;
+
+}
+
+function ShowPropertyOutlines(result)
+{
+    var obj = JSON && JSON.parse(result);
+
+    for (var ff in obj)
+    {
+        addCircle(parseFloat(obj[ff].GPSLatitude), parseFloat(obj[ff].GPSLongitude));
+    }
+
+}
+
+function addPolyline(Loc1, Loc2, GreenLevel)
+{
+    // Create a polyline
+    var lineVertices = new Array(Loc1, Loc2);
+    var line = new Microsoft.Maps.Polyline(lineVertices, { strokeColor: new Microsoft.Maps.Color(255, 255, GreenLevel, 0), strokeThickness: 3 });
+
+    //var line = new Microsoft.Maps.Polyline(lineVertices);
+
+    // Add the polyline to the map
+    map.entities.push(line);
+}
+
+function StartDateSelected(sender, args)
+{
+    document.getElementById("txtStartDate").value = document.getElementById("txtStartDate").value + ' 12:00:00 AM';
+}
+
+function EndDateSelected(sender, args)
+{
+    document.getElementById("txtEndDate").value = document.getElementById("txtEndDate").value + ' 11:59:59 PM';
+}
+
+function zoomLocation(longitude, latitude)
+{
+ 
+    map.setView({ zoom: 18, center: new Microsoft.Maps.Location(latitude, longitude) });
+    //map.setView({ mapTypeId: Microsoft.Maps.MapTypeId.birdseye });
+    }
+
+function addCircle(longitude, latitude)
+{
+ 
+    if (isEmpty(longitude) == true || isNaN(longitude) == true)
+    {
+        return;
+    }
+
+    var vertices = new Array(18);
+    var s = 0;
+
+    for (var i = 0; i <= 6.25; i += .25)
+    {
+        var x;
+        var y;
+
+        x = longitude + 0.001 * Math.cos(i);
+        y = latitude + 0.001 * Math.sin(i);
+
+        vertices[s] = new Microsoft.Maps.Location(x, y);
+        s++;
+
+    }
+
+    var polygon = new Microsoft.Maps.Polygon(vertices, { fillColor: new Microsoft.Maps.Color(50, 0, 0, 255), strokeColor: new Microsoft.Maps.Color(250, 0, 0, 255), strokeThickness: 1 });
+
+    //Microsoft.Maps.Events.addHandler(polygon, 'click', ShowAddressInfo);
+
+    // Add the shape to the map
+    map.entities.push(polygon);
+
+
+
+}
+
+function addPushPin(id, longitude, latitude, color, label, level)
+{
+    var pinicon = "";
+    if (level == 1)
+    {
+        pinicon = "/Images/PushPinRed.png"
+    }
+
+    if (level == 2)
+    {
+        pinicon = "/Images/PushPinYellow.png"
+    }
+
+    if (level == 3)
+    {
+        pinicon = "/Images/PushPinGreen.png"
+    }
+
+    var pushpinOptions = { icon: pinicon, text: label, visible: true, textOffset: offset, typeName: 'pointer' };
+
+    var offset = new Microsoft.Maps.Point(0, 5);
+
+    //if (label == 'P')
+    //{
+    //    var pushpinOptions = { icon: '../../Images/PushPinLightBlue.png', text: label, visible: true, textOffset: offset };
+    //}
+
+    //{
+    
+    //}
+
+    //if (label == 'S')
+    //{ var pushpinOptions = { icon: pinicon, text: label, visible: true, textOffset: offset }; }
+
+    ////if (label == 'S2')
+    ////{ var pushpinOptions = { icon: '../../Images/PushPinYellow.png', text: label, visible: true, textOffset: offset }; }
+
+    ////if (label == 'S3')
+    ////{ var pushpinOptions = { icon: '../../Images/PushPinGreen.png', text: label, visible: true, textOffset: offset }; }
+
+
+    //if (label == 'M')
+    //{ var pushpinOptions = { icon: '../../Images/PushPinMaintenance.png', text: label, visible: true, textOffset: offset }; }
+
+
+    //if (label == 'A')
+    //{ var pushpinOptions = { icon: '../../Images/PushPinYellow.png', text: label, visible: true, textOffset: offset }; }
+
+    //if (label == 'D')
+    //{ var pushpinOptions = { icon: '../../Images/PushPinRed.png', text: label, visible: true, textOffset: offset }; }
+
+
+    //if (label == 'L')
+    //{ var pushpinOptions = { icon: '../../Images/PushPinLightBlue.png', text: label, visible: true, textOffset: offset }; }
+
+    //if (label == 'O')
+    //{ var pushpinOptions = { icon: '../../Images/PushPinLightBlue.png', text: label, visible: true, textOffset: offset }; }
+
+    var pushpin = new Microsoft.Maps.Pushpin(map.getCenter(), pushpinOptions);
+
+    Microsoft.Maps.Events.addHandler(pushpin, 'click', displayEventInfo);
+
+    pushpin.id = id;
+        pushpin.setLocation(new Microsoft.Maps.Location(longitude, latitude));
+
+    // Create the infobox for the pushpin
+    map.entities.push(pushpin);
+}
+
+displayEventInfo = function (e)
+{
+    var obj = e.target;
+    var info = "Events info - " + e.eventName + "\n";
+    info += "Target  : " + obj.toString();
+
+    pinInfobox.setLocation(e.target.getLocation());
+    pinInfobox.setOptions({ visible: true });
+    CheckForUpdate(obj.id);
+}
+
+ShowAddressInfo = function (e)
+{
+    
+}
+
+function CheckForUpdate(id)
+{
+    var GetPinData = new Object();
+    GetPinData.IssueIDFK = id;
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: "/WebServices/GPSGetMapData.asmx/GetPinData",
+        data: JSON.stringify(GetPinData),
+        dataType: "json",
+        success: function (msg)
+        {
+            // Hide the fake progress indicator graphic.
+            ShowIssueDetail(msg.d);
+
+        },
+        error: function (msg)
+        {
+            ShowWarningDialog('A Map Search Update Error has occured.');
+            Common.LogAjaxError('GPSMap2.js', 'CheckForUpdate', msg.responseJSON.Message);
+        }
+    });
+
+}
+
+function ShowIssueDetail(result, e)
+{
+    if (isEmpty(e) == false)
+    {
+        e.stopPropagation();
+    }
+    var BinaryLinks = "";
+    var obj = JSON && JSON.parse(result);
+
+    for (var i in obj)
+    {
+        if (obj[i].NoteType == "JPG")
+        {
+            BinaryLinks += "<img border='1' onclick='showPreview(this)' src='../../BinaryFiles/GetBinaryFile.ashx?TrackingNumber=GPS&NoteIDFK=" + obj[i].NoteIDFK + "' width='100' height='100'>";
+        };
+    }
+
+    pinInfobox.setOptions({ visible: true, showCloseButton: true });
+    pinInfobox.setHtmlContent("<div class='GPSInfoBoxdiv'><button style='float: right;' onclick='pinInfobox.setOptions({ visible: false});' type='button' class='SaveButton'>X</button><span class='GPSInfoBoxTitle'>" + obj[0].IssueIDFK + "  " + obj[0].CreatedDTM + "</span><BR><BR><span class='GPSInfoBoxBody'>" + obj[0].IssueName + "<br><br>" + obj[0].PropertyName + "<BR>" + obj[0].FullAddress + "<BR>" + obj[0].CityStateZip + "<BR>Created By:  " + obj[0].CreatedByUsername + "<BR></span><br>" + BinaryLinks + "</div>");
+}
+
+function showPreview(i)
+{
+    document.getElementById("xyz").src = i.src;
+    document.getElementById("divPreview").style.visibility = "visible";
+}
+
+function smallImg(i)
+{
+    document.getElementById("divPreview").style.visibility = "hidden";
+    i.style.height = "100px";
+    i.style.width = "100px";
+}
+
+function hidePreview()
+{
+    document.getElementById("divPreview").style.visibility = "hidden";
+}
+
+function onSuccess(result)
+{
+    var BinaryLinks = "";
+    var obj = JSON && JSON.parse(result);
+
+    if (obj[0].BinaryFiles != null)
+    {
+        var BinaryFileIDs = obj[0].BinaryFiles.split(",");
+
+        if (BinaryFileIDs[0] != null)
+        {
+            BinaryLinks = "<img border='1' onclick='showPreview(this)' src='http://www.silvertracker.net/binaryfiles/readbinaryfile.aspx?binaryfileidfk=" + BinaryFileIDs[0] + "' width='100' height='100'>";
+        }
+
+        if (BinaryFileIDs[1] != null)
+        {
+            BinaryLinks = BinaryLinks + "<img border='1' onclick='showPreview(this)' src='http://www.silvertracker.net/binaryfiles/readbinaryfile.aspx?binaryfileidfk=" + BinaryFileIDs[1] + "' width='100' height='100'>";
+        }
+
+        if (BinaryFileIDs[2] != null)
+        {
+            BinaryLinks = BinaryLinks + "<img border='1' onclick='showPreview(this)' src='http://www.silvertracker.net/binaryfiles/readbinaryfile.aspx?binaryfileidfk=" + BinaryFileIDs[2] + "' width='100' height='100'>";
+        }
+    }
+
+
+    pinInfobox.setOptions({ visible: true, showCloseButton: true });
+    pinInfobox.setHtmlContent("<div class='GPSInfoBoxdiv'><button style='float: right;' onclick='pinInfobox.setOptions({ visible: false});' type='button'>X</button><span class='GPSInfoBoxTitle'>" + obj[0].IssueIDFK + "  " + obj[0].CreatedDTM + "</span><BR><BR><span class='GPSInfoBoxBody'>" + obj[0].IssueName + "<br><br>" + obj[0].PropertyName + "<BR>" + obj[0].FullAddress + "<BR>" + obj[0].CityStateZip + "<BR>Created By:  " + obj[0].CreatedByUsername + "<BR></span><br>" + BinaryLinks + "</div>");
+
+
+}
+
+function createCanvasPins()
+{
+    var pin, img;
+
+    for (var i = 0; i < 100; i++)
+    {
+
+        //Create a canvas pushpin at a random location
+        pin = new CanvasPushpin(new Microsoft.Maps.Location(Math.random() * 180 - 90, Math.random() * 360 - 180), function (pin, context)
+        {
+            img = new Image();
+            img.onload = function ()
+            {
+                if (context)
+                {
+                    //Calculate the new dimensions of the the canvas after the image is rotated
+                    var dx = Math.abs(Math.cos(pin.Metadata.heading * Math.PI / 180));
+                    var dy = Math.abs(Math.sin(pin.Metadata.heading * Math.PI / 180));
+                    var width = Math.round(img.width * dx + img.height * dy);
+                    var height = Math.round(img.width * dy + img.height * dx);
+
+                    //Set the dimensions of the canvas
+                    context.width = width;
+                    context.height = height;
+
+                    //Offset the canvas such that we will rotate around the center of our arrow
+                    context.translate(width * 0.5, height * 0.5);
+
+                    //Rotate the canvas by the desired heading
+                    context.rotate(pin.Metadata.heading * Math.PI / 180);
+
+                    //Return the canvas offset back to it's original position
+                    context.translate(-img.width * 0.5, -img.height * 0.5);
+
+                    //Draw the arrow image
+                    context.drawImage(img, 0, 0);
+                }
+            };
+            img.src = '/Images/redArrow.png';
+        });
+
+        //Give the pushpin a random heading
+        pin.Metadata = {
+            heading: Math.random() * 360
+        };
+
+        canvasLayer.push(pin);
+    }
+}
+
+function createCanvasPinCs()
+{
+    var pin, img;
+
+    for (var i = 0; i < 100; i++)
+    {
+
+        //Create a canvas pushpin at a random location
+        pin = new CanvasPushpin(new Microsoft.Maps.Location(Math.random() * 180 - 90, Math.random() * 360 - 180), function (pin, context)
+        {
+            img = new Image();
+            img.onload = function ()
+            {
+                if (context)
+                {
+                    context.width = img.width;
+                    context.height = img.height;
+                    context.drawImage(img, 0, 0);
+                }
+            };
+            img.src = '/Images/PushPinGreen.png';
+        });
+
+        //Add the pushpin to the Canvas Entity Collection
+        canvasLayer.push(pin);
+    }
+}
+
+function createCanvasPinsA()
+{
+    var pin, img;
+    
+    for (var i = 0; i < 100; i++)
+    {
+
+        //Create a canvas pushpin at a random location
+        pin = new CanvasPushpin(new Microsoft.Maps.Location(Math.random() * 180 - 90, Math.random() * 360 - 180), function (pin, context) {
+            img = new Image();
+            img.onload = function () {
+                if (context) {
+                    //Calculate the new dimensions of the the canvas after the image is rotated
+                    var dx = Math.abs(Math.cos(pin.Metadata.heading * Math.PI / 180));
+                    var dy = Math.abs(Math.sin(pin.Metadata.heading * Math.PI / 180));                              
+                    var width = Math.round(img.width * dx + img.height * dy);
+                    var height = Math.round(img.width * dy + img.height * dx);
+
+                    //Set the dimensions of the canvas
+                    context.width = width;
+                    context.height = height;
+
+                    //Offset the canvas such that we will rotate around the center of our arrow
+                    context.translate(width * 0.5, height * 0.5);
+
+                    //Rotate the canvas by the desired heading
+                    context.rotate(pin.Metadata.heading * Math.PI / 180);
+
+                    //Return the canvas offset back to it's original position
+                    context.translate(img.width * 0.5, img.height * 0.5);
+
+                    //Draw the arrow image
+                    context.drawImage(img, 0, 0);
+                }
+            };
+            img.src = '/Images/redArrow.png';
+        });
+
+        //Give the pushpin a random heading
+        pin.Metadata = {
+            heading: Math.random() * 360
+        };
+
+        canvasLayer.push(pin);
+    }
+}  
+
+
+//function getMap()
+//{
+//    initMap();
+//}
+
+//var service = new SilverGPS.GetPushPinData();
+//var MessageID = document.getElementById('hidLastMessageID').value
+
+//service.CostOfSandwiches((new Date()).getTime(), onSuccess, null, null);
+
+// service.GetPinData(id, onSuccess, null, null);
+
+
+//if (obj[0].BinaryFiles != null)
+//{
+//    var BinaryFileIDs = obj[0].BinaryFiles.split(",");
+
+//    if (BinaryFileIDs[0] != null)
+//    {
+//        BinaryLinks = "<img border='1' onclick='showPreview(this)' src='http://www.silvertracker.net/binaryfiles/readbinaryfile.aspx?binaryfileidfk=" + BinaryFileIDs[0] + "' width='100' height='100'>";
+
+
+
+//    }
+
+//    if (BinaryFileIDs[1] != null)
+//    {
+//        BinaryLinks = BinaryLinks + "<img border='1' onclick='showPreview(this)' src='http://www.silvertracker.net/binaryfiles/readbinaryfile.aspx?binaryfileidfk=" + BinaryFileIDs[1] + "' width='100' height='100'>";
+//    }
+
+//    if (BinaryFileIDs[2] != null)
+//    {
+//        BinaryLinks = BinaryLinks + "<img border='1' onclick='showPreview(this)' src='http://www.silvertracker.net/binaryfiles/readbinaryfile.aspx?binaryfileidfk=" + BinaryFileIDs[2] + "' width='100' height='100'>";
+//    }
+//}
+
+
+//document.getElementById('npcontainer').style.background='url(bg/'+this.value+'.gif)'">  
+
+//  myWindow = window.open('', 'header', 'menubar=0', 'toolbar=0');
+// myWindow.document.write('<font color=red>Hello World!</font>');
+//i.style.height = "480px";
+//i.style.width = "640px";
+
+// pinInfobox.setOptions({ title: 'Issue #' + obj[0].IssueIDFK });
+//pinInfobox.setOptions({ description: obj[0].PropertyName });
+//    pinInfobox.setHtmlContent('<b>BLAHHHHHHHHHHHH</b></br><h1>ARRRRRRRRRRRRRRGGGGGGG</h1>');
+
+//    var foo = "200,-100,200,200,-200,200,-200,-200";
+
+//    var vertices = new Array(4);
+
+//    for (var i = 0; i < 4; i++)
+//    {
+
+//        vertices[i] = new Microsoft.Maps.Location(fooa[i * 2], fooa[i * 2 + 1]);
+//    }
+
+
+
+
+//  var infoboxOptions = { width: 200, height: 100, showCloseButton: true, zIndex: 0, offset: new Microsoft.Maps.Point(10, 0), showPointer: true };
+// var defaultInfobox = new Microsoft.Maps.Infobox(map.getCenter(), infoboxOptions);
+// map.entities.push(defaultInfobox);
+// defaultInfobox.setHtmlContent('<div id="infoboxText" style="background-color:White; border-style:solid;border-width:medium; border-color:DarkOrange; min-height:100px; width:240px;"><b id="infoboxTitle" style="position:absolute; top:10px; left:10px; width:220px;">myTitle</b><a id="infoboxDescription" style="position:absolute; top:30px; left:10px; width:220px;">Description</a></div>');
+
+
+
+// document.getElementById('stxtMessage').value = result;
+
+//__doPostBack('__Page', '');
+
+
+// document.getElementById('txtTimer').value = result;
+
+
+// P,S,M,L,O,A,D
+
+
+
+
+
+////////////////////////
+
+// Do this only if the outlines are checked
+//   var service = new SilverGPS.GetPushPinData();
+//  var CreatedByUserName = scboUserName.options[scboUserName.selectedIndex].value;
+//  service.GetPropertyGPSOutlineList(CreatedByUserName, 18, ShowPropertyOutlines, null, null);
+
+
+
+//addPushPin(1, 1.63635, 1 .16942, 'LightBlue');
+//addPushPin(2, 1, -117.16148, 'Yellow');
+
+
+//    return;
+
+//    var location1 = new Microsoft.Maps.Location(1, 1);
+//    var location2 = new Microsoft.Maps.Location(1, 1);
+
+//    // Create a polyline
+//    var lineVertices = new Array(location1, location2);
+//    var line = new Microsoft.Maps.Polyline(lineVertices);
+
+//    // Add the polyline to the map
+//    map.entities.push(line);
+
+
+
+
+
+
+//                pinInfobox = new Microsoft.Maps.Infobox(map.getCenter(),
+//                { title: 'My Pushpin',
+//                    description: 'This pushpin is located at (0,0).',
+//                    visible: false,
+//                    zIndex: 50,
+//                    offset: new Microsoft.Maps.Point(0, 15)
+//                });
+
+
+//    // Create the locations
+//    var foo = "200,-100,200,200,-200,200,-200,-200";
+//    var fooa = foo.split(",");
+//    var vertices = new Array(4);
+
+//    for (var i = 0; i < 4; i++)
+//    {
+
+//        vertices[i] = new Microsoft.Maps.Location(fooa[i * 2], fooa[i * 2 + 1]);
+//    }
+
+//    var polygon = new Microsoft.Maps.Polygon(vertices, { fillColor: new Microsoft.Maps.Color(150, 0, 0, 255), strokeColor: new Microsoft.Maps.Color(250, 0, 0, 255), strokeThickness: 1 });
+
+//    // Add the shape to the map
+//    map.entities.push(polygon)
+
+//    // Set the view
+
+
+
+
+//    map.setView({ bounds: Microsoft.Maps.LocationRect.fromLocations(vertices) });
+
+
+
+//function addPin()
+//{
+//    map.entities.clear();
+//    var pushpin = new Microsoft.Maps.Pushpin(map.getCenter(), null);
+//    map.entities.push(pushpin);
+//    pushpin.setLocation(new Microsoft.Maps.Location(47.5, -122.33));
+
+//}
+
+
+// Set the view
+//map.setView({zoom: 18, bounds: Microsoft.Maps.LocationRect.fromLocations(vertices) });
+
+
+//   addPushPin(longitude, latitude, 'Yellow');

@@ -1,0 +1,14 @@
+﻿
+var DTM =
+    {
+        z: '',
+
+        New: function(test)
+        {
+            DTM.z = test;
+        },
+
+    }
+
+var zz = new DTM.New('aa');
+

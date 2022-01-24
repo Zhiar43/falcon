@@ -1,0 +1,77 @@
+﻿
+var tree;
+
+
+function DeleteNode(id)
+{
+    var rr = tree.findNodeByAttribute("nodeid", id);
+    if (!rr)
+    {
+        return false;
+    }
+
+    var parent = rr.get_parent();
+    parent.get_nodes().remove(rr);
+
+}
+
+function AddNode(text, icon, selectable, action, propertyidfk, propertyaddressidfk, unitidfk, residentidfk, parentnode)
+{
+    var node = new Telerik.Web.UI.RadTreeNode();
+    node.set_text(text);
+
+    node.get_attributes().setAttribute('Selectable', selectable);
+    node.get_attributes().setAttribute('Action', action);
+    node.get_attributes().setAttribute('PropertyIDFK', propertyidfk);
+    node.get_attributes().setAttribute('PropertyAddressIDFK', propertyaddressidfk);
+    node.get_attributes().setAttribute('UnitIDFK', unitidfk);
+    node.get_attributes().setAttribute('ResidentIDFK', residentidfk);
+
+    if (selectable == false)
+    {
+        var nnn = new Telerik.Web.UI.RadTreeNode();
+        nnn.set_text('Loading....');
+        node.get_nodes().add(nnn);
+    }
+
+    if (icon.length > 0)
+    {
+        node.set_imageUrl(icon);
+    }
+
+    if (parentnode)
+    {
+        parentnode.get_nodes().add(node);
+    }
+    else
+    {
+        tree.get_nodes().add(node);
+    }
+}
+
+function InsertNode(id, text, icon, selectable, parentnodeid)
+{
+    var node = new Telerik.Web.UI.RadTreeNode();
+    node.set_text(text);
+    node.id = id;
+    node.value = id;
+    node.get_attributes().setAttribute('selectable', selectable);
+    node.get_attributes().setAttribute('nodeid', id);
+
+
+
+    if (icon.length > 0)
+    {
+        node2.set_imageUrl(icon);
+    }
+
+    if (parentnodeid.length > 0)
+    {
+        var rr = tree.findNodeByAttribute("nodeid", parentnodeid);
+        rr.get_nodes().insert(0, node);
+    }
+    else
+    {
+        tree.get_nodes().add(node);
+    }
+}
