@@ -52,12 +52,13 @@ class Admin{
     public function __construct() {}
 
     
-    //create New admin, should provide basic info
+    //create New admin instance, insert admin to the database and set current instance info
     public function createAdmin($userName, $password,$email,$firstName,$lastName,$domainName){
         
     }
 
-    public function getAdmin(){}
+    //create new admin account, get admin info from the database and setup current instance info
+    public function getAdmin($userName, $password){}
     
 
 }
