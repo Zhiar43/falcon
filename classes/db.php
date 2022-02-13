@@ -24,7 +24,6 @@ class Execute{
         $conn = new db();
         $conn = $conn -> getConnection();
         $this->conn = $conn;
-        $result;
         switch ($type) {
             case 'execute':
                 $result = $this->execute($query);
@@ -68,17 +67,13 @@ class Execute{
     }
 
     public function execute($query){
-        $results;
-        $result = $this->conn -> query($query);
-        if ($result){
-            $results = true;
-        } else { $results = false;}
+        $result = $this->conn->query($query);
         $this->conn->close();
-        return $results;
+        return $result;
     }
 }
 
-// $ex = new Execute("SELECT * FROM hima.visets where ipAddress = '::1'", "something else");
+// $ex = new Execute("SELECT * FROM hima.visets where ipAddress = '::1'", "single");
 // print_r($ex->result);
 
 ?>
