@@ -50,4 +50,47 @@ a:hover {
   vertical-align: none !important;
   opacity: 0.8;
 }
+
+.table thead {
+  background-color: #e2e2e2 !important;
+  vertical-align: none !important;
+}
+
+.table thead tr {
+  color: gray;
+  font-weight: 500;
+}
+
+.tableCameraImg i {
+  font-size: 1.3rem;
+}
+
+.tableCameraImg i:hover {
+  color: #0560d8 !important;
+  cursor: pointer;
+}
+
+.cameraModalHeader {
+  background-color: #e2e2e2;
+  border-bottom: 1px solid #9c9c9c;
+}
+
+.cameraModalBody {
+  background-color: #e2e2e2;
+}
+
+.container {
+  min-width: 1000px;
+}
+
+.property-bg {
+  background-color: #6ba782 !important;
+  color: white !important;
+}
+
+.assign-bg {
+  background-color: gray !important;
+  text-decoration: line-through;
+  opacity: .7;
+}
 /*# sourceMappingURL=styles.css.map */
