@@ -1,6 +1,6 @@
  <!-- camera report modal   -->
  <div class="modal fade" id="cameraModal" tabindex="-3" aria-labelledby="cameraModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl  modal-dialog-centered">
+        <div class="modal-dialog modal-lg  modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header cameraModalHeader ">
                     <h5 class="modal-title" id="cameraModalLabel">Photo Count 1/12</h5>
