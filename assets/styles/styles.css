@@ -2,19 +2,14 @@
   margin: 0;
   padding: 0;
   -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-}
-
-:root {
-  font-size: 62.5%;
-  /* this make 1 rem = 10px*/
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
   padding: 0;
   -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .height-full {
@@ -23,7 +18,36 @@ body {
 
 .aligin-item-center {
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+a {
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  color: #181818 !important;
+}
+
+a:hover {
+  color: #0560d8 !important;
+}
+
+.login-text {
+  color: #818181 !important;
+}
+
+.forget-password {
+  color: #0560d8 !important;
+  cursor: pointer;
+}
+
+.forget-password:hover {
+  color: #05479c !important;
+}
+
+.logo img, .logo svg {
+  width: 100px  !important;
+  vertical-align: none !important;
+  opacity: 0.8;
 }
 /*# sourceMappingURL=styles.css.map */
