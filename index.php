@@ -79,7 +79,7 @@
                     </form>
                 </div>
             </div>
-            <!-- rest password modal end  -->
+            <!-- rest password modal end  --->
         </div>
 
     </div>
