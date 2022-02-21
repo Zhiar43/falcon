@@ -67,6 +67,7 @@ a:hover {
 .table tbody tr {
   -webkit-transition: all .1s ease-in-out;
   transition: all .1s ease-in-out;
+  cursor: pointer;
 }
 
 .table tbody tr:hover {
