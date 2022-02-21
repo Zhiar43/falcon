@@ -16,16 +16,13 @@
   <?php require('../components/navbar.php') ?>
   <div class="container">
     <div class="p-1 rounded text-center mt-3 " style="background-color: rgb(216, 216, 216);">
-
-      <h1 class="" style="color: gray;">
-        ISSUE MONITOR</h1>
+      <h1 class="" style="color: gray;">ISSUE MONITOR</h1>
     </div>
     <div class="d-flex justify-content-center ">
       <?php 
-  require('../components/monitor-table/monitorTable.php')
-  ?>
+         require('../components/monitor-table/monitorTable.php')
+          ?>
     </div>
-
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
