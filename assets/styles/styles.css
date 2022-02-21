@@ -51,6 +51,20 @@ a:hover {
   opacity: 0.8;
 }
 
+.table {
+  -webkit-transition: all .3s ease-in-out;
+  transition: all .3s ease-in-out;
+}
+
+.table tbody tr {
+  -webkit-transition: all .05s ease-in-out;
+  transition: all .05s ease-in-out;
+}
+
+.table tbody tr:hover {
+  background-color: #fdce79 !important;
+}
+
 .table thead {
   background-color: #e2e2e2 !important;
   vertical-align: none !important;
@@ -83,12 +97,12 @@ a:hover {
   min-width: 1000px;
 }
 
-.property-bg {
+.issue-active {
   background-color: #6ba782 !important;
   color: white !important;
 }
 
-.assign-bg {
+.issue-unactive {
   background-color: gray !important;
   text-decoration: line-through;
   opacity: .7;

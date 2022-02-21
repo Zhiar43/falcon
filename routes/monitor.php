@@ -28,7 +28,7 @@ ISSUE MONITOR</h1>
 </div>
     <div class="d-flex justify-content-center ">
       <?php 
-  require('../components/monitorTable.php')
+  require('../components/monitor-table/monitorTable.php')
   ?>
     </div>
 
