@@ -49,9 +49,6 @@
     <?php require('tableBody.php') ?>
   </tbody>
 </table>
-<?php require('footerTable.php') ?>
-
-  </table>
   <?php require('monitorFooterTable.php') ?>
 
 <?php require('cameraModalReportModal.php') ?>

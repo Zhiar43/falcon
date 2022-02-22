@@ -15,30 +15,14 @@
 <body>
   <?php require('../components/navbar.php') ?>
   <div class="container">
-    <div class="p-1 rounded text-center mt-3 " style="background-color: rgb(216, 216, 216);">
-      <h1 class="" style="color: gray;">ISSUE MONITOR</h1>
-
     <div class="p-1 rounded text-center mt-3 bg--primary">
-
-      <h1 class="" style="color: gray;">
-        ISSUE MONITOR</h1>
-    </div>
+      <h1 class="" style="color: gray;">ISSUE MONITOR</h1>
+</div>
       <?php 
          require('../components/monitor-table/monitorTable.php')
           ?>
     </div>
-  require('../components/monitor-table/monitorTable.php')
-  ?>
-      <h1 style="color: gray;">
-        ISSUE MONITOR</h1>
-    </div>
-    <?php 
-       require('../components/monitor-table/monitorTable.php')
-  ?>
 
-
-
-  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
