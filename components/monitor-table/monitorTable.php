@@ -1,5 +1,5 @@
 <table class="table table-striped ">
-  <thead>
+  <thead class="bg--secondary">
     <tr>
       <th scope="col">Issue ID</th>
       <th scope="col">
@@ -49,5 +49,7 @@
     <?php require('tableBody.php') ?>
   </tbody>
 </table>
+<?php require('footerTable.php') ?>
+
 
 <?php require('cameraModalReportModal.php') ?>
