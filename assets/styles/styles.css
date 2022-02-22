@@ -16,6 +16,7 @@ body {
 
 .bg--primary {
   background-color: #e2e2e2 !important;
+  background-color: #e2e2e2;
 }
 
 .bg--secondary {
@@ -27,7 +28,7 @@ body {
   color: white;
 }
 
-.height-full {
+\.height-full {
   min-height: 100vh !important;
 }
 

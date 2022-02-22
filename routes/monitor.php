@@ -23,6 +23,13 @@
       <?php 
   require('../components/monitor-table/monitorTable.php')
   ?>
+      <h1 style="color: gray;">
+        ISSUE MONITOR</h1>
+    </div>
+    <?php 
+       require('../components/monitor-table/monitorTable.php')
+  ?>
+
 
   </div>
 
