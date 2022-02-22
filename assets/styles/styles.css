@@ -14,7 +14,21 @@ body {
   box-sizing: border-box;
 }
 
-.height-full {
+.bg--primary {
+  background-color: #e2e2e2 !important;
+  background-color: #e2e2e2;
+}
+
+.bg--secondary {
+  background-color: #d8d8d8;
+}
+
+.bg--dark {
+  background-color: #979797;
+  color: white;
+}
+
+\.height-full {
   min-height: 100vh !important;
 }
 
@@ -56,6 +70,7 @@ a:hover {
 .table {
   -webkit-transition: all .3s ease-in-out;
   transition: all .3s ease-in-out;
+  margin-bottom: 0 !important;
 }
 
 .table tbody th {
@@ -79,7 +94,6 @@ a:hover {
 }
 
 .table thead {
-  background-color: #e2e2e2 !important;
   vertical-align: none !important;
 }
 
