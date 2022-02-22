@@ -15,16 +15,14 @@
 <body>
   <?php require('../components/navbar.php') ?>
   <div class="container">
-    <div class="p-1 rounded text-center mt-3 " style="background-color: rgb(216, 216, 216);">
-
-      <h1 class="" style="color: gray;">
+    <div class="p-1 rounded text-center mt-3 bg--primary">
+      <h1 style="color: gray;">
         ISSUE MONITOR</h1>
     </div>
-    <div class="d-flex justify-content-center ">
-      <?php 
-  require('../components/monitor-table/monitorTable.php')
+    <?php 
+       require('../components/monitor-table/monitorTable.php')
   ?>
-    </div>
+
 
   </div>
 

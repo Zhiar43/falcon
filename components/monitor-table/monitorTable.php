@@ -1,5 +1,5 @@
 <table class="table table-striped ">
-  <thead>
+  <thead class="bg--secondary">
     <tr>
       <th scope="col">Issue ID</th>
       <th scope="col">
@@ -48,6 +48,7 @@
   <tbody class="text-center fs-6">
     <?php require('tableBody.php') ?>
   </tbody>
-</table>
+  </table>
+  <?php require('monitorFooterTable.php') ?>
 
 <?php require('cameraModalReportModal.php') ?>
