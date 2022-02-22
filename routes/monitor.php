@@ -14,19 +14,28 @@
 
 <body>
   <?php require('../components/navbar.php') ?>
+  <div class="  d-flex flex-row-reverse overflow-auto">
+     
+   <?php 
+   
+   require('../components/monitor-table/monitorMessageBox.php')
+   ?>
+   
   <div class="container">
-    <div class="p-1 rounded text-center mt-3 bg--primary">
-      <h1 class="" style="color: gray;">ISSUE MONITOR</h1>
-</div>
-      <?php 
-         require('../components/monitor-table/monitorTable.php')
-          ?>
-    </div>
+     <div class=" p-1 rounded text-center mt-3 bg--primary">
+    <h1 class="" style="color: gray;">ISSUE MONITOR</h1>
+     </div>
 
+  <?php 
+           require('../components/monitor-table/monitorTable.php')
+           ?>
+  </div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"></script>
+    <script src="../assets/js/falcon.js"></script>
 </body>
 
 </html>
