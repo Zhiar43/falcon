@@ -16,6 +16,13 @@
   <?php require('../components/navbar.php') ?>
   <div class="container">
     <div class="p-1 rounded text-center mt-3 bg--primary">
+
+      <h1 class="" style="color: gray;">
+        ISSUE MONITOR</h1>
+    </div>
+      <?php 
+  require('../components/monitor-table/monitorTable.php')
+  ?>
       <h1 style="color: gray;">
         ISSUE MONITOR</h1>
     </div>

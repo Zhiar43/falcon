@@ -15,6 +15,7 @@ body {
 }
 
 .bg--primary {
+  background-color: #e2e2e2 !important;
   background-color: #e2e2e2;
 }
 
@@ -22,7 +23,12 @@ body {
   background-color: #d8d8d8;
 }
 
-.height-full {
+.bg--dark {
+  background-color: #979797;
+  color: white;
+}
+
+\.height-full {
   min-height: 100vh !important;
 }
 
