@@ -12,3 +12,4 @@ messageBoxIcon.addEventListener('click', () => {
 })
 
 closeMessageIcon.addEventListener('click', () => messageBox.classList.add('d-none'))
+
