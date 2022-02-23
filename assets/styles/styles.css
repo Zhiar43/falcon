@@ -191,4 +191,26 @@ a:hover {
 .border {
   border: rgba(128, 128, 128, 0.589) solid 1.5px !important;
 }
+
+.issueSummeryModal h2 {
+  color: #004196;
+  font-weight: 400;
+  font-size: large;
+}
+
+.relative {
+  position: relative;
+}
+
+.mapController {
+  position: absolute;
+  top: 0;
+  right: 0;
+  max-width: 30% !important;
+  padding: .5% 1%;
+}
+
+.mapController select {
+  width: 100%;
+}
 /*# sourceMappingURL=styles.css.map */

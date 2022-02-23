@@ -34,7 +34,7 @@
  		<div class="footerModal">
 			 
  		<img data-bs-toggle="modal" data-bs-target="#issueSummery" src="https://demo2.silvertracker.net/Images/summarysm.png">
-		<img data-bs-toggle="modal" data-bs-target="#vehicleSearch" src="https://demo2.silvertracker.net/Images/vehiclesearch.png">
+		<img data-bs-toggle="modal" data-bs-target="#vehicleSearchModal" src="https://demo2.silvertracker.net/Images/vehiclesearch.png">
  		<img data-bs-toggle="modal" data-bs-target="#taskSummery" src="https://demo2.silvertracker.net/Images/taskbluesm.png">
  		<img data-bs-toggle="modal" data-bs-target="#checkPointSummery" src="https://demo2.silvertracker.net/Images/checkpointbluesm.png">
  		<img data-bs-toggle="modal" data-bs-target="#userMapModal" src="https://demo2.silvertracker.net/Images/gps.png">
@@ -56,13 +56,14 @@
  	</div>
 
  </div>
-
+ <?php require('taskSummeryModal.php') ?>
+ 
+ <?php require('vehicleSearchModal.php') ?>
 </div>
 
+<?php require('checkPointSummeryModal.php') ?>
 
-			 <?php require('userMapModal.php') ?>
-			 <?php require('issueSummeryModal.php') ?>
-			 <?php require('vehicleSearchModal.php') ?>
-			 <?php require('taskSummeryModal.php') ?>
-			 <?php require('checkPointSummeryModal.php') ?>
-			 <?php require('propertyAlertModal.php') ?>
+
+<?php require('propertyAlertModal.php') ?>
+<?php require('userMapModal.php') ?>
+<?php require('issueSummeryModal.php') ?>
