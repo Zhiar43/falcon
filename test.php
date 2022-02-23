@@ -3,7 +3,6 @@
 
 
 $dayTime = array(
-    ,
     'mon' => array(
         '12' => true,
         '1' => false,
