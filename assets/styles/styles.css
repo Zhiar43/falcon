@@ -169,4 +169,22 @@ a:hover {
 .bi-x-circle:hover {
   color: darkred;
 }
+
+.footerModal {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 1rem;
+}
+
+.footerModal img {
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.footerModal img:hover {
+  -webkit-transform: translateY(-5px);
+          transform: translateY(-5px);
+}
 /*# sourceMappingURL=styles.css.map */

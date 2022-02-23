@@ -31,12 +31,12 @@
 
  <div class="d-flex alert-secondary  justify-content-between aligin-item-center">
  	
- 		<div>
+ 		<div class="footerModal">
 			 
- 		<img src="https://demo2.silvertracker.net/Images/summarysm.png">
-		<img src="https://demo2.silvertracker.net/Images/vehiclesearch.png">
- 		<img src="https://demo2.silvertracker.net/Images/taskbluesm.png">
- 		<img src="https://demo2.silvertracker.net/Images/checkpointbluesm.png">
+ 		<img data-bs-toggle="modal" data-bs-target="#issueSummery" src="https://demo2.silvertracker.net/Images/summarysm.png">
+		<img data-bs-toggle="modal" data-bs-target="#vehicleSearch" src="https://demo2.silvertracker.net/Images/vehiclesearch.png">
+ 		<img data-bs-toggle="modal" data-bs-target="#taskSummery" src="https://demo2.silvertracker.net/Images/taskbluesm.png">
+ 		<img data-bs-toggle="modal" data-bs-target="#checkPointSummery" src="https://demo2.silvertracker.net/Images/checkpointbluesm.png">
  		<img data-bs-toggle="modal" data-bs-target="#userMapModal" src="https://demo2.silvertracker.net/Images/gps.png">
  		<img id="monitorMessageIcon" src="https://demo2.silvertracker.net/Images/messageboardsm.png">
  		<img data-bs-toggle="modal" data-bs-target="#propertyAlertModal" src="https://demo2.silvertracker.net/Images/NewNote.png">
@@ -61,4 +61,8 @@
 
 
 			 <?php require('userMapModal.php') ?>
+			 <?php require('issueSummeryModal.php') ?>
+			 <?php require('vehicleSearchModal.php') ?>
+			 <?php require('taskSummeryModal.php') ?>
+			 <?php require('checkPointSummeryModal.php') ?>
 			 <?php require('propertyAlertModal.php') ?>
