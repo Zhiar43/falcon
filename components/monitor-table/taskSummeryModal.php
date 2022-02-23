@@ -8,6 +8,23 @@
       <div class="modal-body ">
        <!-- your code here start -->
        
+       <table class="table-responsive-lg table-light table-bordered table-hover">
+  <thead>
+    <tr>
+      <th class="text-secondary">Task Name</th>
+      <th class="text-secondary">Issue Type</th>
+      <th class="text-secondary">Property Name</th>
+      <th class="text-secondary">Status</th>
+      <th class="text-secondary">Created Date/Age</th>
+      <th class="text-secondary">Assigned To</th>
+    </tr>
+  </thead>
+  <tbody>
+   
+  </tbody>
+</table>
+
+
        <!-- your code here  end -->
      
         </div>
