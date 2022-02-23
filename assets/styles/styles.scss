@@ -163,4 +163,15 @@ h1{
     color: darkred;
   }
 }
+.footerModal{
+  display: flex;
+  gap: 1rem;
+  img{
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    &:hover{
+    transform: translateY(-5px);
+    }
+  }
+}
 /*# sourceMappingURL=styles.css.map */
